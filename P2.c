@@ -13,8 +13,7 @@ while(1){
 printf("==> ");
 fflush(stdout);
 
-scanf("%s", command);
-if(command == NULL){
+if(fgets(command, sizeof(command), stdin) == NULL){
 break;
 }
 
@@ -23,7 +22,14 @@ command[strcspn(command, "\n")] = 0;
 if (strcmp(command, "myclear") == 0){
 system("clear");
 } else if (strcmp(command, "mydir") == 0){
+char *dir = command + 6;
+if(*dir == '\0'){
+dir = ".";
+}
 
+char dir_cmd[1024];
+snprintf(dir_cmd, sizeof(dir_cmd), "ls -al %s", dir);
+system(dir_cmd);
 } else if (strcmp(command, "myenviron") == 0){
 char **env = environ;
 while(*env){
